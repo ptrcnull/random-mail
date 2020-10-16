@@ -117,8 +117,11 @@ func main() {
 		} else {
 			fullName = depolishify(name) + sep + depolishify(surname)
 		}
+		if randBool() {
+			fullName += year
+		}
 
-		email := fullName + year + "@" + domain
+		email := fullName + "@" + domain
 		name = strings.ToUpper(name[:1]) + name[1:]
 		surname = strings.ToUpper(surname[:1]) + surname[1:]
 		return Account{
