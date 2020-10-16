@@ -15,6 +15,12 @@ const minCount = 1000
 const domain = "example.tld"
 const maxRequestCount = 1000
 
+type Account struct {
+	Email string `json:"email"`
+	FullName string `json:"full_name"`
+	Year int `json:"year"`
+}
+
 func readCsv(filename string) ([]string, error) {
 	file, err := os.Open("data/" + filename)
 	if err != nil {
@@ -38,7 +44,7 @@ func readCsv(filename string) ([]string, error) {
 		if count < minCount {
 			continue
 		}
-		records = append(records, depolishify(strings.ToLower(record[0])))
+		records = append(records, strings.ToLower(record[0]))
 	}
 }
 
@@ -84,7 +90,7 @@ func main() {
 		panic(err)
 	}
 
-	getOne := func(gender string) string {
+	getOne := func(gender string) Account {
 		gender = string(strings.ToLower(gender)[0])
 		var names []string
 		var surnames []string
@@ -100,12 +106,26 @@ func main() {
 		surname := surnames[rand.Intn(len(surnames))]
 
 		sep := []string{"", ".", "-", "_"}[rand.Intn(4)]
-		year := strconv.FormatInt(int64(rand.Intn(40)+1960), 10)
+		yearInt := rand.Intn(40)+1960
+		year := strconv.FormatInt(int64(yearInt), 10)
 		if randBool() {
 			year = year[2:]
 		}
+		var fullName string
+		if randBool() {
+			fullName = depolishify(surname) + sep + depolishify(name)
+		} else {
+			fullName = depolishify(name) + sep + depolishify(surname)
+		}
 
-		return name + sep + surname + year + "@" + domain
+		email := fullName + year + "@" + domain
+		name = strings.ToUpper(name[:1]) + name[1:]
+		surname = strings.ToUpper(surname[:1]) + surname[1:]
+		return Account{
+			Email: email,
+			FullName: name + " " + surname,
+			Year: yearInt,
+		}
 	}
 
 	app.Get("/", func(ctx *fiber.Ctx) {
@@ -123,14 +143,13 @@ func main() {
 			return
 		}
 
-		sep := ctx.Query("sep", "\n")
-		res := ""
+		res := []Account{}
 
 		for i := 0; i < count; i++ {
-			res += getOne(gender) + sep
+			res = append(res, getOne(gender))
 		}
 
-		ctx.SendString(res)
+		ctx.JSON(res)
 	})
 
 	err = app.Listen(":8081")
