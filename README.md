@@ -11,8 +11,7 @@ Note: this project doesn't provide mailboxes; its only purpose is to generate se
 
 ## Using
 
-- `go run main.go`
+- `go run main.go` or `docker-compose up -d`
 - `GET /`
 - `GET /?count=10`
-- `GET /?count=10&sep=,`
-- `GET /?count=10&sep=,&gender=male`
+- `GET /?count=10&gender=male`

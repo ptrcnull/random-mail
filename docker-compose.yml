@@ -1,0 +1,8 @@
+version: '3'
+services:
+  random-mail:
+    container_name: random-mail
+    build: .
+    restart: always
+    ports:
+      - 127.0.0.1:8081:8081
