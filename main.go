@@ -132,6 +132,7 @@ func main() {
 		gender := ctx.Query("gender", "random")
 		count64, err := strconv.ParseInt(ctx.Query("count", "1"), 10, 32)
 		count := int(count64)
+		ctx.Set("Access-Control-Allow-Origin", "*")
 
 		if err != nil {
 			ctx.SendString("error: " + err.Error())
