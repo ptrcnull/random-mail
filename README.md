@@ -9,6 +9,8 @@ Note: this project doesn't provide mailboxes; its only purpose is to generate se
 - [names_male.csv](https://dane.gov.pl/pl/dataset/1667,lista-imion-wystepujacych-w-rejestrze-pesel-osoby-zyjace)
 - [names_female.csv](https://dane.gov.pl/pl/dataset/1667,lista-imion-wystepujacych-w-rejestrze-pesel-osoby-zyjace)
 
+You can use `./download_names.sh` to download them yourself.
+
 ## Using
 
 - `go run main.go` or `docker-compose up -d`
